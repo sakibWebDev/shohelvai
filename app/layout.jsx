@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
         style={{ fontFamily: "'Noto Sans Bengali', sans-serif" }}
       >
         <StoreProvider>
-          <Toaster />
+          <Toaster position="top-right" reverseOrder={false}  />
           {children}
         </StoreProvider>
       </body>

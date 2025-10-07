@@ -12,29 +12,29 @@ const Footer = () => {
 
     const linkSections = [
         {
-            title: "PRODUCTS",
+            title: "পণ্য",
             links: [
-                { text: "Earphones", path: '/', icon: null },
-                { text: "Headphones", path: '/', icon: null },
-                { text: "Smartphones", path: '/', icon: null },
-                { text: "Laptops", path: '/', icon: null },
+                { text: "উন্নত বীজ", path: '/', icon: null },
+                { text: "সার ও কীটনাশক", path: '/', icon: null },
+                { text: "কৃষি যন্ত্রপাতি", path: '/', icon: null },
+                { text: "জৈব সারের", path: '/', icon: null },
             ]
         },
         {
-            title: "WEBSITE?",
+            title: "ওয়েবসাইট",
             links: [
-                { text: "Home", path: '/', icon: null },
-                { text: "Privacy Policy", path: '/', icon: null },
-                { text: "Become Plus Member", path: '/pricing', icon: null },
-                { text: "Create Your Store", path: '/create-store', icon: null },
+                { text: "হোম", path: '/', icon: null },
+                { text: "গোপনীয়তা নীতি", path: '/', icon: null },
+                { text: "সদস্য হন", path: '/pricing', icon: null },
+                { text: "সহায়তা কেন্দ্র", path: '/support', icon: null },
             ]
         },
         {
-            title: "CONTACT",
+            title: "যোগাযোগ",
             links: [
-                { text: "+1-212-456-7890", path: '/', icon: MailIcon },
-                { text: "contact@example.com", path: '/', icon: PhoneIcon },
-                { text: "794 Francisco, 94102", path: '/', icon: MapPinIcon }
+                { text: "+৮৮০১৭১২৩৪৫৬৭৮", path: '/', icon: PhoneIcon },
+                { text: "info@chashibhai.com", path: '/', icon: MailIcon },
+                { text: "ধানমন্ডি, ঢাকা-১২০৫", path: '/', icon: MapPinIcon }
             ]
         }
     ];
@@ -54,11 +54,13 @@ const Footer = () => {
                         <Link href="/" className="text-4xl font-semibold text-slate-700">
                             <span className="text-green-600">চাষী</span>ভাই<span className="text-green-600 text-5xl leading-0">.</span>
                         </Link>
-                        <p className="max-w-[410px] mt-6 text-sm">চাষী ভাই-এ স্বাগতম 🌾
-এখানে আপনি উন্নতমানের বীজ ও কৃষি পণ্য পাবেন।
-আপনার ফসলের জন্য সেরা গুণগত মান আমরা নিশ্চিত করি।
-আমাদের পণ্য বৈজ্ঞানিকভাবে নির্বাচিত, যাতে আপনার ফসল বেশি উৎপাদনশীল ও সুস্থ থাকে।
-চাষী ভাই — আপনার কৃষির সেরা সহচর। 🌱</p>
+                        <p className="max-w-[410px] mt-6 text-sm">
+                            চাষী ভাই-এ স্বাগতম 🌾
+                            এখানে আপনি উন্নতমানের বীজ ও কৃষি পণ্য পাবেন।
+                            আপনার ফসলের জন্য সেরা গুণগত মান আমরা নিশ্চিত করি।
+                            আমাদের পণ্য বৈজ্ঞানিকভাবে নির্বাচিত, যাতে আপনার ফসল বেশি উৎপাদনশীল ও সুস্থ থাকে।
+                            চাষী ভাই — আপনার কৃষির সেরা সহচর। 🌱
+                        </p>
                         <div className="flex items-center gap-3 mt-5">
                             {socialIcons.map((item, i) => (
                                 <Link href={item.link} key={i} className="flex items-center justify-center w-10 h-10 bg-slate-100 hover:scale-105 hover:border border-slate-300 transition rounded-full">
@@ -83,8 +85,8 @@ const Footer = () => {
                         ))}
                     </div>
                 </div>
-                <p className="py-4 text-sm text-slate-500">
-                    Copyright 2025 © চাষী ভাই — All Rights Reserved.
+                <p className="py-4 text-sm text-slate-500 text-center">
+                    কপিরাইট ২০২৫ © চাষী ভাই — সর্বস্বত্ব সংরক্ষিত।
                 </p>
             </div>
         </footer>

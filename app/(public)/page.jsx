@@ -5,11 +5,13 @@ import OurSpecs from "@/components/OurSpec";
 import LatestProducts from "@/components/LatestProducts";
 import SeasonSeeds from "@/components/SeasonSeeds";
 import Contact from "@/components/Contact";
+import FarmerBanner from "@/components/FarmerBanner";
 
 export default function Home() {
     return (
         <div>
             <Hero />
+            <FarmerBanner/>
             <SeasonSeeds/>
             <LatestProducts />
             <BestSelling />
