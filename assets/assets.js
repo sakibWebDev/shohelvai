@@ -20,6 +20,20 @@ import product_img12 from "./product_img12.png"
 import profile_pic1 from "./profile_pic1.jpg"
 import profile_pic2 from "./profile_pic2.jpg"
 import profile_pic3 from "./profile_pic3.jpg"
+import seed1 from "./seedespicture/closeup-shot-various-legumes-eco-bags.jpg";
+import seed2 from "./seedespicture/different-types-peas-beans-buckets-aside.jpg";
+import seed3 from "./seedespicture/legumes-beans-assortment-different-bowls-light-stone-background-top-view-healthy-vegan-protein-food.png";
+import seed4 from "./seedespicture/pyramid-different-nuts.jpg";
+import seed5 from "./seedespicture/sack-rice-seed-with-white-rice-small-wooden-spoon-rice-plant.jpg";
+
+export const seedsbanners = [
+  seed1,
+  seed2,
+  seed3,
+  seed4,
+  seed5
+];
+
 
 export const assets = {
     upload_area, hero_model_img,Chashi,
