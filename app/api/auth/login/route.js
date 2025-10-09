@@ -20,7 +20,7 @@ export async function POST(req) {
       return Response.json({ error: "Invalid credentials" }, { status: 401 });
     }
 
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ userId: user._id , email: user.email }, JWT_SECRET, { expiresIn: "7d" });
 
     return Response.json({ message: "Login successful", token });
   } catch (err) {

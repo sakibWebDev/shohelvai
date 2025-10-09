@@ -1,35 +1,37 @@
-// app/signup/page.tsx
-'use client'
+'use client';
 import { useState } from "react";
 import Link from "next/link";
-import axios from "axios";
+import axiosInstance from "@/lib/axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+
 
 export default function SignupPage() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
+  const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setMessage("লোড হচ্ছে...");
     setIsLoading(true);
 
     try {
-      const res = await axios.post("/api/auth/signup", form);
+      const res = await axiosInstance.post("/api/auth/signup", form);
 
-      if (res.status === 200) {
+      if (res.status === 201) {
         setMessage("✅ সাইনআপ সফল!");
-        toast.success("সাইনআপ সফল!");
+        toast.success("সাইনআপ সফল হয়েছে!");
+        router.push("/login");
         setForm({ name: "", email: "", password: "" });
       } else {
         setMessage("❌ সাইনআপ ব্যর্থ হয়েছে");
       }
     } catch (err) {
-      console.error(err);
+      console.error("Signup error:", err.response?.data || err.message);
       setMessage("❌ " + (err.response?.data?.error || "Network error"));
+      toast.error(err.response?.data?.error || "নেটওয়ার্ক ত্রুটি!");
     }
 
     setIsLoading(false);
@@ -128,10 +130,13 @@ export default function SignupPage() {
             </div>
 
             {message && (
-              <div className={`text-center mt-4 p-3 rounded-lg ${
-                message.includes("✅") ? "bg-green-50 text-green-800 border border-green-200" :
-                "bg-red-50 text-red-800 border border-red-200"
-              }`}>
+              <div
+                className={`text-center mt-4 p-3 rounded-lg ${
+                  message.includes("✅")
+                    ? "bg-green-50 text-green-800 border border-green-200"
+                    : "bg-red-50 text-red-800 border border-red-200"
+                }`}
+              >
                 <p className="text-sm font-medium">{message}</p>
               </div>
             )}

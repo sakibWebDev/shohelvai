@@ -2,25 +2,46 @@
 'use client'
 import { useState } from "react";
 import Link from "next/link";
+import axiosInstance from "@/lib/axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMessage("লোড হচ্ছে...");
-    setIsLoading(true);
+  e.preventDefault();
+  setMessage("লোড হচ্ছে...");
+  setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
+  try {
+    const res = await axiosInstance.post("/api/auth/login", form);
+
+    if (res.status === 200) {
+      // ✅ Successful login
       setMessage("✅ লগইন সফল!");
-      setIsLoading(false);
+      toast.success("লগইন সফল হয়েছে!");
       setForm({ email: "", password: "" });
-    }, 1500);
-  };
+
+      // ✅ Redirect to Home page after login
+      router.push("/");
+    } else {
+      setMessage("❌ লগইন ব্যর্থ হয়েছে");
+    }
+  } catch (err) {
+    console.error("Login error:", err.response?.data || err.message);
+    setMessage("❌ " + (err.response?.data?.error || "Network error"));
+    toast.error(err.response?.data?.error || "নেটওয়ার্ক ত্রুটি!");
+  }
+
+  setIsLoading(false);
+};
+
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);

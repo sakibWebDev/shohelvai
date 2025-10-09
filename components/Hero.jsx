@@ -3,7 +3,7 @@ import { assets, seedsbanners } from '@/assets/assets'
 import React, { useEffect, useState } from "react";
 import { ArrowRightIcon, ChevronRightIcon } from 'lucide-react'
 import Image from 'next/image'
-import CategoriesMarquee from './CategoriesMarquee'
+
 
 const Hero = () => {
   const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || '৳'
@@ -90,8 +90,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-
-      <CategoriesMarquee />
     </div>
   )
 }
