@@ -15,6 +15,7 @@ export default function Product() {
         const product = products.find((product) => product.id === productId);
         setProduct(product);
     }
+    
 
     useEffect(() => {
         if (products.length > 0) {

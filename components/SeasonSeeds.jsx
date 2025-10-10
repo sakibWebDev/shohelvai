@@ -1,399 +1,58 @@
 "use client";
 import React, { useState, useEffect } from "react";
-
-const categories = [
-  {
-    id: "baromashi",
-    title: "বারোমাসি বীজ",
-    title_en: "All Season Seeds",
-    description: "সারা বছর চাষযোগ্য বীজসমূহ",
-    description_en: "Seeds suitable for cultivation throughout the year",
-    season: "সারা বছর (All Year Round)",
-    planting_months: ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"],
-    harvesting_period: "বপন থেকে ৩০-৬০ দিন",
-    soil_type: "দো-আঁশ মাটি, জৈব পদার্থ সমৃদ্ধ",
-    water_requirements: "মাঝারি, নিয়মিত সেচ",
-    icon: "🌿",
-    color: "emerald",
-    seeds: [
-      {
-        name: "লালশাক",
-        name_en: "Red Amaranth",
-        scientific_name: "Amaranthus cruentus",
-        benefits: "আয়রন, ক্যালসিয়াম ও ভিটামিন সমৃদ্ধ",
-        special_notes: "দ্রুত বৃদ্ধি, পুষ্টিগুণে ভরপুর",
-        icon: "🍃"
-      },
-      {
-        name: "পুঁইশাক",
-        name_en: "Malabar Spinach",
-        scientific_name: "Basella alba",
-        benefits: "ভিটামিন এ, সি এবং আয়রন সমৃদ্ধ",
-        special_notes: "লতা জাতীয় গাছ, বারান্দায় চাষযোগ্য",
-        icon: "🌱"
-      },
-      {
-        name: "ঢেঁড়স",
-        name_en: "Okra/Lady's Finger",
-        scientific_name: "Abelmoschus esculentus",
-        benefits: "ফাইবার, ভিটামিন সি এবং ফলিক অ্যাসিড সমৃদ্ধ",
-        special_notes: "গরম আবহাওয়া উপযোগী",
-        icon: "🥬"
-      },
-      {
-        name: "টমেটো",
-        name_en: "Tomato",
-        scientific_name: "Solanum lycopersicum",
-        benefits: "লাইকোপেন, ভিটামিন সি এবং পটাসিয়াম সমৃদ্ধ",
-        special_notes: "রোদযুক্ত স্থানে ভাল জন্মে",
-        icon: "🍅"
-      },
-      {
-        name: "মরিচ",
-        name_en: "Chili Pepper",
-        scientific_name: "Capsicum annuum",
-        benefits: "ভিটামিন সি এবং ক্যাপসাইসিন সমৃদ্ধ",
-        special_notes: "মাঝারি থেকে বেশি রোদ প্রয়োজন",
-        icon: "🌶️"
-      },
-      {
-        name: "বেগুন",
-        name_en: "Brinjal/Eggplant",
-        scientific_name: "Solanum melongena",
-        benefits: "আঁশ, পটাসিয়াম এবং ভিটামিন সমৃদ্ধ",
-        special_notes: "উষ্ণ আবহাওয়া উপযোগী",
-        icon: "🍆"
-      }
-    ]
-  },
-  {
-    id: "shitkalin",
-    title: "শীতকালীন বীজ",
-    title_en: "Winter Season Seeds",
-    description: "শীত মৌসুমে চাষের উপযুক্ত ফসল",
-    description_en: "Crops suitable for cultivation in winter season",
-    season: "হেমন্ত ও শীতকাল (Late October to February)",
-    bengali_months: ["কার্তিক", "অগ্রহায়ণ", "পৌষ", "মাঘ"],
-    planting_months: ["অক্টোবর", "নভেম্বর", "ডিসেম্বর", "জানুয়ারি"],
-    temperature_range: "১৫°C - ২৫°C",
-    harvesting_period: "বপন থেকে ৬০-৯০ দিন",
-    soil_type: "বলদুআশ থেকে এটেল দোআঁশ মাটি",
-    water_requirements: "কম থেকে মাঝারি সেচ",
-    icon: "❄️",
-    color: "blue",
-    seeds: [
-      {
-        name: "কপি",
-        name_en: "Cabbage",
-        scientific_name: "Brassica oleracea",
-        benefits: "ভিটামিন কে, সি এবং ফাইবার সমৃদ্ধ",
-        special_notes: "শীতের শুরুতে চারা রোপণ করা ভাল",
-        icon: "🥬"
-      },
-      {
-        name: "মূলা",
-        name_en: "Radish",
-        scientific_name: "Raphanus sativus",
-        benefits: "ভিটামিন সি, ফোলেট এবং পটাসিয়াম সমৃদ্ধ",
-        special_notes: "দ্রুত বৃদ্ধি, ৩০-৪০ দিনে সংগ্রহযোগ্য",
-        icon: "🌰"
-      },
-      {
-        name: "গাজর",
-        name_en: "Carrot",
-        scientific_name: "Daucus carota",
-        benefits: "বিটা-ক্যারোটিন, ভিটামিন এ এবং ফাইবার সমৃদ্ধ",
-        special_notes: "গভীর ও নরম মাটি প্রয়োজন",
-        icon: "🥕"
-      },
-      {
-        name: "লেটুস",
-        name_en: "Lettuce",
-        scientific_name: "Lactuca sativa",
-        benefits: "ভিটামিন কে, এ এবং ফোলেট সমৃদ্ধ",
-        special_notes: "হালকা শীতে ভাল জন্মে",
-        icon: "🥗"
-      },
-      {
-        name: "ফুলকপি",
-        name_en: "Cauliflower",
-        scientific_name: "Brassica oleracea var. botrytis",
-        benefits: "ভিটামিন সি, কে এবং ফাইবার সমৃদ্ধ",
-        special_notes: "শীতের মাঝামাঝি সময় পর্যন্ত চাষযোগ্য",
-        icon: "🥦"
-      },
-      {
-        name: "ব্রোকলি",
-        name_en: "Broccoli",
-        scientific_name: "Brassica oleracea var. italica",
-        benefits: "ভিটামিন সি, কে এবং অ্যান্টিঅক্সিডেন্ট সমৃদ্ধ",
-        special_notes: "হালকা ঠান্ডা আবহাওয়া উপযোগী",
-        icon: "🥦"
-      },
-      {
-        name: "পালং শাক",
-        name_en: "Spinach",
-        scientific_name: "Spinacia oleracea",
-        benefits: "আয়রন, ক্যালসিয়াম এবং ভিটামিন সমৃদ্ধ",
-        special_notes: "হিম সহনশীল",
-        icon: "🍃"
-      }
-    ]
-  },
-  {
-    id: "grishmakalin",
-    title: "গ্রীষ্মকালীন বীজ",
-    title_en: "Summer Season Seeds",
-    description: "গরমে চাষের উপযুক্ত ফসল",
-    description_en: "Crops suitable for cultivation in hot summer",
-    season: "বসন্ত ও গ্রীষ্মকাল (March to June)",
-    bengali_months: ["ফাল্গুন", "চৈত্র", "বৈশাখ", "জ্যৈষ্ঠ"],
-    planting_months: ["মার্চ", "এপ্রিল", "মে", "জুন"],
-    temperature_range: "২৫°C - ৩৫°C",
-    harvesting_period: "বপন থেকে ৪৫-৭৫ দিন",
-    soil_type: "বলদুআশ মাটি, ভাল জলনিকাশ যুক্ত",
-    water_requirements: "নিয়মিত ও বেশি সেচ প্রয়োজন",
-    icon: "☀️",
-    color: "orange",
-    seeds: [
-      {
-        name: "লাউ",
-        name_en: "Bottle Gourd",
-        scientific_name: "Lagenaria siceraria",
-        benefits: "জলীয় অংশ বেশি, ভিটামিন সি সমৃদ্ধ",
-        special_notes: "লতানো গাছ, পর্যাপ্ত জায়গা প্রয়োজন",
-        icon: "🎃"
-      },
-      {
-        name: "ঝিঙা",
-        name_en: "Ridge Gourd",
-        scientific_name: "Luffa acutangula",
-        benefits: "ফাইবার, ভিটামিন সি এবং আয়রন সমৃদ্ধ",
-        special_notes: "খাড়া মাচা প্রয়োজন",
-        icon: "🥒"
-      },
-      {
-        name: "করলা",
-        name_en: "Bitter Gourd",
-        scientific_name: "Momordica charantia",
-        benefits: "অ্যান্টিঅক্সিডেন্ট, রক্তের শর্করা নিয়ন্ত্রণে সহায়ক",
-        special_notes: "তিক্ত স্বাদের জন্য পরিচিত",
-        icon: "🥒"
-      },
-      {
-        name: "কুমড়া",
-        name_en: "Pumpkin",
-        scientific_name: "Cucurbita maxima",
-        benefits: "বিটা-ক্যারোটিন, ভিটামিন এ এবং পটাসিয়াম সমৃদ্ধ",
-        special_notes: "লতানো গাছ, ব্যাপক জায়গা প্রয়োজন",
-        icon: "🎃"
-      },
-      {
-        name: "চালকুমড়া",
-        name_en: "Ash Gourd",
-        scientific_name: "Benincasa hispida",
-        benefits: "ক্যালসিয়াম, ফসফরাস এবং ভিটামিন সমৃদ্ধ",
-        special_notes: "দীর্ঘ সময় সংরক্ষণযোগ্য",
-        icon: "🍈"
-      },
-      {
-        name: "শসা",
-        name_en: "Cucumber",
-        scientific_name: "Cucumis sativus",
-        benefits: "জলীয় অংশ বেশি, ভিটামিন কে সমৃদ্ধ",
-        special_notes: "দ্রুত বৃদ্ধি, নিয়মিত পানি প্রয়োজন",
-        icon: "🥒"
-      },
-      {
-        name: "তরমুজ",
-        name_en: "Watermelon",
-        scientific_name: "Citrullus lanatus",
-        benefits: "লাইকোপেন, সিট্রুলিন এবং জলীয় অংশ সমৃদ্ধ",
-        special_notes: "বড় জায়গা এবং বেশি রোদ প্রয়োজন",
-        icon: "🍉"
-      }
-    ]
-  },
-  {
-    id: "borshakalin",
-    title: "বর্ষাকালীন বীজ",
-    title_en: "Monsoon Season Seeds",
-    description: "বর্ষাকালে চাষের উপযুক্ত ফসল",
-    description_en: "Crops suitable for cultivation in rainy season",
-    season: "বর্ষাকাল (July to October)",
-    bengali_months: ["আষাঢ়", "শ্রাবণ", "ভাদ্র", "আশ্বিন"],
-    planting_months: ["জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর"],
-    temperature_range: "২৪°C - ৩২°C",
-    harvesting_period: "বপন থেকে ৯০-১২০ দিন",
-    soil_type: "এটেল মাটি, জল ধারণ ক্ষমতা বেশি",
-    water_requirements: "প্রাকৃতিক বৃষ্টির উপর নির্ভরশীল",
-    icon: "🌧️",
-    color: "indigo",
-    seeds: [
-      {
-        name: "ধান",
-        name_en: "Paddy/Rice",
-        scientific_name: "Oryza sativa",
-        benefits: "কার্বোহাইড্রেট, ভিটামিন বি এবং মিনারেল সমৃদ্ধ",
-        special_notes: "বাংলাদেশের প্রধান খাদ্য শস্য",
-        icon: "🌾"
-      },
-      {
-        name: "তিল",
-        name_en: "Sesame",
-        scientific_name: "Sesamum indicum",
-        benefits: "ক্যালসিয়াম, ম্যাগনেসিয়াম এবং স্বাস্থ্যকর ফ্যাট সমৃদ্ধ",
-        special_notes: "শুকনা মাটি পছন্দ করে",
-        icon: "⚪"
-      },
-      {
-        name: "তরমুজ",
-        name_en: "Watermelon",
-        scientific_name: "Citrullus lanatus",
-        benefits: "জলীয় অংশ বেশি, অ্যান্টিঅক্সিডেন্ট সমৃদ্ধ",
-        special_notes: "বর্ষার শুরুতে বপন করা হয়",
-        icon: "🍉"
-      },
-      {
-        name: "শিম",
-        name_en: "Hyacinth Bean",
-        scientific_name: "Lablab purpureus",
-        benefits: "প্রোটিন, ফাইবার এবং আয়রন সমৃদ্ধ",
-        special_notes: "লতা জাতীয়, মাচা প্রয়োজন",
-        icon: "🫘"
-      },
-      {
-        name: "মুগ ডাল",
-        name_en: "Mung Bean",
-        scientific_name: "Vigna radiata",
-        benefits: "প্রোটিন, ফাইবার এবং অ্যান্টিঅক্সিডেন্ট সমৃদ্ধ",
-        special_notes: "স্বল্প সময়ের ফসল",
-        icon: "🫘"
-      },
-      {
-        name: "আখ",
-        name_en: "Sugarcane",
-        scientific_name: "Saccharum officinarum",
-        benefits: "শর্করা, ক্যালসিয়াম এবং আয়রন সমৃদ্ধ",
-        special_notes: "দীর্ঘমেয়াদী ফসল",
-        icon: "🎋"
-      },
-      {
-        name: "পাট",
-        name_en: "Jute",
-        scientific_name: "Corchorus capsularis",
-        benefits: "প্রাকৃতিক আঁশ, পরিবেশ বান্ধব",
-        special_notes: "বাংলাদেশের সোনালি আঁশ",
-        icon: "🌿"
-      }
-    ]
-  },
-  {
-    id: "hemonto",
-    title: "হেমন্তকালীন বীজ",
-    title_en: "Late Autumn Seeds",
-    description: "হেমন্তকালে চাষের উপযুক্ত ফসল",
-    description_en: "Crops suitable for cultivation in late autumn",
-    season: "হেমন্তকাল (Mid October to December)",
-    bengali_months: ["কার্তিক", "অগ্রহায়ণ"],
-    planting_months: ["অক্টোবর", "নভেম্বর"],
-    temperature_range: "১৮°C - ২৮°C",
-    harvesting_period: "বপন থেকে ৫০-৮০ দিন",
-    soil_type: "দো-আঁশ মাটি, নরম ও উর্বর",
-    water_requirements: "মাঝারি সেচ",
-    icon: "🍂",
-    color: "amber",
-    seeds: [
-      {
-        name: "মটরশুটি",
-        name_en: "Green Pea",
-        scientific_name: "Pisum sativum",
-        benefits: "প্রোটিন, ফাইবার এবং ভিটামিন সি সমৃদ্ধ",
-        special_notes: "হালকা ঠান্ডা আবহাওয়া উপযোগী",
-        icon: "🫛"
-      },
-      {
-        name: "ব্রকলি",
-        name_en: "Broccoli",
-        scientific_name: "Brassica oleracea var. italica",
-        benefits: "ভিটামিন সি, কে এবং ক্যালসিয়াম সমৃদ্ধ",
-        special_notes: "হিম পড়ার আগে সংগ্রহ করতে হয়",
-        icon: "🥦"
-      },
-      {
-        name: "বিট",
-        name_en: "Beetroot",
-        scientific_name: "Beta vulgaris",
-        benefits: "ফোলেট, ম্যাঙ্গানিজ এবং পটাসিয়াম সমৃদ্ধ",
-        special_notes: "মাটির নিচের অংশ খাওয়া হয়",
-        icon: "🍠"
-      },
-      {
-        name: "শালগম",
-        name_en: "Turnip",
-        scientific_name: "Brassica rapa",
-        benefits: "ভিটামিন সি, ফাইবার এবং ক্যালসিয়াম সমৃদ্ধ",
-        special_notes: "মূল এবং পাতা উভয়ই খাওয়া যায়",
-        icon: "🥬"
-      }
-    ]
-  },
-  {
-    id: "bashonto",
-    title: "বসন্তকালীন বীজ",
-    title_en: "Spring Season Seeds",
-    description: "বসন্তকালে চাষের উপযুক্ত ফসল",
-    description_en: "Crops suitable for cultivation in spring season",
-    season: "বসন্তকাল (February to April)",
-    bengali_months: ["ফাল্গুন", "চৈত্র"],
-    planting_months: ["ফেব্রুয়ারি", "মার্চ"],
-    temperature_range: "২০°C - ৩০°C",
-    harvesting_period: "বপন থেকে ৪০-৭০ দিন",
-    soil_type: "উর্বর দো-আঁশ মাটি",
-    water_requirements: "নিয়মিত সেচ",
-    icon: "🌸",
-    color: "pink",
-    seeds: [
-      {
-        name: "ভুট্টা",
-        name_en: "Corn/Maize",
-        scientific_name: "Zea mays",
-        benefits: "কার্বোহাইড্রেট, ফাইবার এবং ভিটামিন বি সমৃদ্ধ",
-        special_notes: "পরাগায়নের জন্য বাতাস প্রয়োজন",
-        icon: "🌽"
-      },
-      {
-        name: "সয়াবিন",
-        name_en: "Soybean",
-        scientific_name: "Glycine max",
-        benefits: "উচ্চ প্রোটিন, ফাইবার এবং আইসোফ্লাভোন সমৃদ্ধ",
-        special_notes: "তৈলবীজ ফসল",
-        icon: "🫘"
-      },
-      {
-        name: "সূর্যমুখী",
-        name_en: "Sunflower",
-        scientific_name: "Helianthus annuus",
-        benefits: "ভিটামিন ই, সেলেনিয়াম এবং স্বাস্থ্যকর ফ্যাট সমৃদ্ধ",
-        special_notes: "পর্যাপ্ত সূর্যালোক প্রয়োজন",
-        icon: "🌻"
-      },
-      {
-        name: "বিন্স",
-        name_en: "Beans",
-        scientific_name: "Phaseolus vulgaris",
-        benefits: "প্রোটিন, ফাইবার এবং আয়রন সমৃদ্ধ",
-        special_notes: "লতা জাতীয়, মাচা প্রয়োজন",
-        icon: "🫘"
-      }
-    ]
-  }
-];
+import axiosInstance from "@/lib/axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setSeeds } from "@/lib/features/seeds/seedSlice";
+import Link from "next/link"; // ✅ Correct import
+import { useRouter } from "next/navigation"; // For navigation
 
 const SeasonSeeds = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSeed, setSelectedSeed] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  
+  const dispatch = useDispatch();
+  const seedsData = useSelector(state => state.seeds);
+  
+  // Use data from Redux or local state
+  const seasons = seedsData.seasons || [];
+  const seeds = seedsData.list || [];
+
+  const fetchData = async () => {
+    try {
+      const response = await axiosInstance.get('/api/getseeds');
+      console.log('API Response:', response.data); // Debug log
+      
+      if (response.data.success) {
+        // Check different possible response structures
+        const responseData = response.data.data || response.data;
+        
+        const seedsData = responseData.seeds || responseData.data?.seeds || [];
+        const seasonsData = responseData.seasons || responseData.data?.seasons || [];
+        
+        // ✅ Dispatch to Redux store
+        dispatch(setSeeds({
+          seeds: seedsData,
+          seasons: seasonsData
+        }));
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // Only fetch data if not already in Redux store
+    if (seeds.length === 0 || seasons.length === 0) {
+      fetchData();
+    } else {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -451,6 +110,17 @@ const SeasonSeeds = () => {
     }
   };
 
+  // Get seeds for selected category
+  const getSeedsBySeason = (seasonId) => {
+    return seeds.filter(seed => seed.season_id === seasonId);
+  };
+
+  // Handle seed click for navigation
+  const handleSeedClick = (seed) => {
+    const seedSlug = seed.name.replace(/\s+/g, '-').toLowerCase();
+    router.push(`/seed/${seedSlug}`);
+  };
+
   // Mobile category selector
   const MobileCategorySelector = () => (
     <div className="md:hidden mb-4">
@@ -463,14 +133,25 @@ const SeasonSeeds = () => {
         className="w-full p-4 text-lg border-2 border-green-300 rounded-xl bg-white focus:outline-none focus:border-green-500"
       >
         <option value="">মৌসুম নির্বাচন করুন</option>
-        {categories.map((cat) => (
-          <option key={cat.id} value={cat.id}>
-            {cat.icon} {cat.title}
+        {seasons.map((season) => (
+          <option key={season.id} value={season.id}>
+            {season.icon} {season.title}
           </option>
         ))}
       </select>
     </div>
   );
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-cyan-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto mb-4"></div>
+          <p className="text-xl text-gray-600">বীজের তথ্য লোড হচ্ছে...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-cyan-50 py-4 px-3">
@@ -492,26 +173,26 @@ const SeasonSeeds = () => {
               <div className="bg-white rounded-2xl shadow-lg p-4 md:p-6 sticky top-4">
                 <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-3 md:mb-4">মৌসুম নির্বাচন</h2>
                 <div className="space-y-2 md:space-y-3">
-                  {categories.map((cat) => {
-                    const color = colorClasses[cat.color];
+                  {seasons.map((season) => {
+                    const color = colorClasses[season.color];
                     return (
                       <button
-                        key={cat.id}
+                        key={season.id}
                         onClick={() => {
-                          setSelectedCategory(cat.id === selectedCategory ? null : cat.id);
+                          setSelectedCategory(season.id === selectedCategory ? null : season.id);
                           setSelectedSeed(null);
                         }}
                         className={`w-full text-left p-3 md:p-4 rounded-xl border-2 transition-all duration-300 ${
-                          selectedCategory === cat.id
+                          selectedCategory === season.id
                             ? `${color.bg} ${color.border} ${color.text} border-2 scale-105 shadow-md`
                             : `bg-white border-gray-200 text-gray-700 hover:shadow-md ${color.hover}`
                         }`}
                       >
                         <div className="flex items-center space-x-2 md:space-x-3">
-                          <span className="text-xl md:text-2xl">{cat.icon}</span>
+                          <span className="text-xl md:text-2xl">{season.icon}</span>
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-base md:text-lg truncate">{cat.title}</h3>
-                            <p className="text-xs md:text-sm opacity-75 truncate">{cat.title_en}</p>
+                            <h3 className="font-semibold text-base md:text-lg truncate">{season.title}</h3>
+                            <p className="text-xs md:text-sm opacity-75 truncate">{season.title_en}</p>
                           </div>
                         </div>
                       </button>
@@ -530,70 +211,93 @@ const SeasonSeeds = () => {
             {selectedCategory ? (
               <div className="space-y-4 md:space-y-6">
                 {/* Category Details */}
-                {categories
-                  .filter((cat) => cat.id === selectedCategory)
-                  .map((category) => {
-                    const color = colorClasses[category.color];
+                {seasons
+                  .filter((season) => season.id === selectedCategory)
+                  .map((season) => {
+                    const color = colorClasses[season.color];
+                    const seasonSeeds = getSeedsBySeason(season.id);
+                    
                     return (
-                      <div key={category.id} className="bg-white rounded-2xl shadow-lg overflow-hidden">
+                      <div key={season.id} className="bg-white rounded-2xl shadow-lg overflow-hidden">
                         {/* Category Header - Mobile Optimized */}
                         <div className={`${color.bg} ${color.text} p-4 md:p-6`}>
                           <div className="flex items-center justify-between">
                             <div className="flex-1 min-w-0">
-                              <h2 className="text-xl md:text-2xl font-bold truncate">{category.title}</h2>
-                              <p className="text-sm md:text-lg opacity-90 truncate">{category.title_en}</p>
+                              <h2 className="text-xl md:text-2xl font-bold truncate">{season.title}</h2>
+                              <p className="text-sm md:text-lg opacity-90 truncate">{season.title_en}</p>
                             </div>
-                            <span className="text-3xl md:text-4xl flex-shrink-0 ml-3">{category.icon}</span>
+                            <span className="text-3xl md:text-4xl flex-shrink-0 ml-3">{season.icon}</span>
                           </div>
-                          <p className="mt-2 text-xs md:text-sm opacity-80">{category.description}</p>
+                          <p className="mt-2 text-xs md:text-sm opacity-80">{season.description}</p>
                         </div>
 
                         {/* Category Info Grid - Mobile Optimized */}
                         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 p-3 md:p-6">
                           <div className="bg-gray-50 rounded-lg p-2 md:p-4">
                             <h4 className="font-semibold text-gray-700 text-xs md:text-sm mb-1 md:mb-2">🌡️ তাপমাত্রা</h4>
-                            <p className="text-xs">{category.temperature_range}</p>
+                            <p className="text-xs">{season.temperature_range || "সাধারণ তাপমাত্রা"}</p>
                           </div>
                           <div className="bg-gray-50 rounded-lg p-2 md:p-4">
                             <h4 className="font-semibold text-gray-700 text-xs md:text-sm mb-1 md:mb-2">📅 রোপণের সময়</h4>
-                            <p className="text-xs line-clamp-2">{category.planting_months.slice(0, 2).join(", ")}...</p>
+                            <p className="text-xs line-clamp-2">
+                              {season.planting_months?.slice(0, 2).join(", ") || "সারা বছর"}...
+                            </p>
                           </div>
                           <div className="bg-gray-50 rounded-lg p-2 md:p-4">
                             <h4 className="font-semibold text-gray-700 text-xs md:text-sm mb-1 md:mb-2">🕒 সংগ্রহ সময়</h4>
-                            <p className="text-xs">{category.harvesting_period}</p>
+                            <p className="text-xs">{season.harvesting_period}</p>
                           </div>
                           <div className="bg-gray-50 rounded-lg p-2 md:p-4">
                             <h4 className="font-semibold text-gray-700 text-xs md:text-sm mb-1 md:mb-2">💧 পানি প্রয়োজন</h4>
-                            <p className="text-xs line-clamp-2">{category.water_requirements}</p>
+                            <p className="text-xs line-clamp-2">{season.water_requirements}</p>
                           </div>
                         </div>
 
                         {/* Seeds Grid - Mobile Optimized */}
                         <div className="p-3 md:p-6">
-                          <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-3 md:mb-4">বীজের তালিকা</h3>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-                            {category.seeds.map((seed, index) => (
-                              <div
-                                key={index}
-                                onClick={() => setSelectedSeed(seed)}
-                                className={`border-2 rounded-xl p-3 md:p-4 cursor-pointer transition-all duration-300 hover:shadow-md active:scale-95 ${
-                                  selectedSeed?.name === seed.name
-                                    ? `${color.border} ${color.bg} border-2`
-                                    : "border-gray-200 bg-white"
-                                }`}
-                              >
-                                <div className="flex items-center space-x-2 md:space-x-3 mb-2 md:mb-3">
-                                  <span className="text-xl md:text-2xl flex-shrink-0">{seed.icon}</span>
-                                  <div className="flex-1 min-w-0">
-                                    <h4 className="font-semibold text-gray-800 text-sm md:text-base truncate">{seed.name}</h4>
-                                    <p className="text-xs text-gray-600 truncate">{seed.name_en}</p>
+                          <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-3 md:mb-4">
+                            বীজের তালিকা ({seasonSeeds.length})
+                          </h3>
+                          {seasonSeeds.length > 0 ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+                              {seasonSeeds.map((seed, index) => (
+                                <div
+                                  key={seed.id || index}
+                                  onClick={() => handleSeedClick(seed)}
+                                  className={`border-2 rounded-xl p-3 md:p-4 cursor-pointer transition-all duration-300 hover:shadow-md active:scale-95 ${
+                                    selectedSeed?.id === seed.id
+                                      ? `${color.border} ${color.bg} border-2`
+                                      : "border-gray-200 bg-white hover:bg-gray-50"
+                                  }`}
+                                >
+                                  <div className="flex items-center space-x-2 md:space-x-3 mb-2 md:mb-3">
+                                    <span className="text-xl md:text-2xl flex-shrink-0">{seed.icon}</span>
+                                    <div className="flex-1 min-w-0">
+                                      <h4 className="font-semibold text-gray-800 text-sm md:text-base truncate">{seed.name}</h4>
+                                      <p className="text-xs text-gray-600 truncate">{seed.name_en}</p>
+                                    </div>
                                   </div>
+                                  <p className="text-xs text-gray-500 mb-1 md:mb-2 line-clamp-1">{seed.scientific_name}</p>
+                                  <p className="text-xs md:text-sm text-gray-700 line-clamp-2">{seed.benefits}</p>
+                                  
+                                  {/* Quick Info Badges */}
+                                  <div className="flex flex-wrap gap-1 mt-2">
+                                    <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                                      {seed.difficulty}
+                                    </span>
+                                    <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                                      {seed.maturity_time}
+                                    </span>
+                                  </div>
+                                  <p className="text-xs text-green-600 mt-2">🔍 বিস্তারিত দেখতে ক্লিক করুন</p>
                                 </div>
-                                <p className="text-xs text-gray-500 mb-1 md:mb-2 line-clamp-1">{seed.scientific_name}</p>
-                                <p className="text-xs md:text-sm text-gray-700 line-clamp-2">{seed.benefits}</p>
-                              </div>
-                            ))}
-                          </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="text-center py-8">
+                              <p className="text-gray-500">এই মৌসুমের জন্য কোন বীজ পাওয়া যায়নি</p>
+                            </div>
+                          )}
                         </div>
                       </div>
                     );
@@ -628,11 +332,17 @@ const SeasonSeeds = () => {
 
                             <h4 className="font-semibold text-gray-700 text-sm md:text-base mb-1 md:mb-2">💚 স্বাস্থ্য উপকারিতা</h4>
                             <p className="text-gray-600 text-sm md:text-base mb-3 md:mb-4">{selectedSeed.benefits}</p>
+
+                            <h4 className="font-semibold text-gray-700 text-sm md:text-base mb-1 md:mb-2">🌱 অঙ্কুরোদগম সময়</h4>
+                            <p className="text-gray-600 text-sm md:text-base mb-3 md:mb-4">{selectedSeed.germination_time}</p>
                           </div>
 
                           <div>
                             <h4 className="font-semibold text-gray-700 text-sm md:text-base mb-1 md:mb-2">📝 বিশেষ নির্দেশনা</h4>
                             <p className="text-gray-600 text-sm md:text-base mb-3 md:mb-4">{selectedSeed.special_notes}</p>
+
+                            <h4 className="font-semibold text-gray-700 text-sm md:text-base mb-1 md:mb-2">⏰ পরিপক্কতা সময়</h4>
+                            <p className="text-gray-600 text-sm md:text-base mb-3 md:mb-4">{selectedSeed.maturity_time}</p>
 
                             <div className="bg-green-50 rounded-lg p-3 md:p-4">
                               <h4 className="font-semibold text-green-800 text-sm md:text-base mb-2">🌱 চাষের টিপস</h4>
@@ -645,10 +355,16 @@ const SeasonSeeds = () => {
                           </div>
                         </div>
 
-                        <div className="mt-6 flex justify-end sticky bottom-0 bg-white pt-4 md:pt-0 md:static">
+                        <div className="mt-6 flex space-x-3 justify-end sticky bottom-0 bg-white pt-4 md:pt-0 md:static">
+                          <button
+                            onClick={() => handleSeedClick(selectedSeed)}
+                            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors text-base md:text-sm"
+                          >
+                            বিস্তারিত দেখুন
+                          </button>
                           <button
                             onClick={() => setSelectedSeed(null)}
-                            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors w-full md:w-auto text-base md:text-sm"
+                            className="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors text-base md:text-sm"
                           >
                             বন্ধ করুন
                           </button>
@@ -673,31 +389,31 @@ const SeasonSeeds = () => {
                     }
                   </p>
                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-6 md:mt-8">
-                    {categories.map((cat) => {
-                      const color = colorClasses[cat.color];
+                    {seasons.map((season) => {
+                      const color = colorClasses[season.color];
                       return (
                         <div 
                           onClick={() => {
-                            setSelectedCategory(cat.id === selectedCategory ? null : cat.id);
+                            setSelectedCategory(season.id === selectedCategory ? null : season.id);
                             setSelectedSeed(null);
                           }} 
-                          key={cat.id} 
+                          key={season.id} 
                           className={`text-center cursor-pointer p-3 md:p-4 rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 hover:shadow-md border-2 ${
-                            selectedCategory === cat.id 
+                            selectedCategory === season.id 
                               ? `${color.bg} ${color.border} border-2 shadow-md` 
                               : "bg-gray-50 border-gray-200 hover:bg-gray-100"
                           }`}
                         >
-                          <span className="text-2xl md:text-3xl block mb-1 md:mb-2">{cat.icon}</span>
+                          <span className="text-2xl md:text-3xl block mb-1 md:mb-2">{season.icon}</span>
                           <p className={`font-semibold text-xs md:text-sm ${
-                            selectedCategory === cat.id ? color.text : "text-gray-700"
+                            selectedCategory === season.id ? color.text : "text-gray-700"
                           }`}>
-                            {cat.title}
+                            {season.title}
                           </p>
                           <p className={`text-xs ${
-                            selectedCategory === cat.id ? "opacity-90" : "text-gray-500"
+                            selectedCategory === season.id ? "opacity-90" : "text-gray-500"
                           }`}>
-                            {cat.title_en}
+                            {season.title_en}
                           </p>
                         </div>
                       );
