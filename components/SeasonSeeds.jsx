@@ -19,6 +19,8 @@ const SeasonSeeds = () => {
   // Use data from Redux or local state
   const seasons = seedsData.seasons || [];
   const seeds = seedsData.list || [];
+  console.log("i loved you ", seeds, seasons);
+  
 
   const fetchData = async () => {
     try {
@@ -28,11 +30,8 @@ const SeasonSeeds = () => {
       if (response.data.success) {
         // Check different possible response structures
         const responseData = response.data.data || response.data;
-        
         const seedsData = responseData.seeds || responseData.data?.seeds || [];
         const seasonsData = responseData.seasons || responseData.data?.seasons || [];
-        
-        // ✅ Dispatch to Redux store
         dispatch(setSeeds({
           seeds: seedsData,
           seasons: seasonsData
@@ -66,60 +65,75 @@ const SeasonSeeds = () => {
   }, []);
 
   const colorClasses = {
-    emerald: { 
-      bg: "bg-emerald-50", 
-      border: "border-emerald-200", 
-      text: "text-emerald-800", 
-      hover: "hover:bg-emerald-100",
-      darkBg: "bg-emerald-100"
-    },
-    blue: { 
-      bg: "bg-blue-50", 
-      border: "border-blue-200", 
-      text: "text-blue-800", 
-      hover: "hover:bg-blue-100",
-      darkBg: "bg-blue-100"
-    },
-    orange: { 
-      bg: "bg-orange-50", 
-      border: "border-orange-200", 
-      text: "text-orange-800", 
-      hover: "hover:bg-orange-100",
-      darkBg: "bg-orange-100"
-    },
-    indigo: { 
-      bg: "bg-indigo-50", 
-      border: "border-indigo-200", 
-      text: "text-indigo-800", 
-      hover: "hover:bg-indigo-100",
-      darkBg: "bg-indigo-100"
-    },
-    amber: { 
-      bg: "bg-amber-50", 
-      border: "border-amber-200", 
-      text: "text-amber-800", 
-      hover: "hover:bg-amber-100",
-      darkBg: "bg-amber-100"
-    },
-    pink: { 
-      bg: "bg-pink-50", 
-      border: "border-pink-200", 
-      text: "text-pink-800", 
-      hover: "hover:bg-pink-100",
-      darkBg: "bg-pink-100"
-    }
-  };
+  emerald: { 
+    bg: "bg-emerald-50", 
+    border: "border-emerald-200", 
+    text: "text-emerald-800", 
+    hover: "hover:bg-emerald-100",
+    darkBg: "bg-emerald-100"
+  },
+  blue: { 
+    bg: "bg-blue-50", 
+    border: "border-blue-200", 
+    text: "text-blue-800", 
+    hover: "hover:bg-blue-100",
+    darkBg: "bg-blue-100"
+  },
+  orange: { 
+    bg: "bg-orange-50", 
+    border: "border-orange-200", 
+    text: "text-orange-800", 
+    hover: "hover:bg-orange-100",
+    darkBg: "bg-orange-100"
+  },
+  indigo: { 
+    bg: "bg-indigo-50", 
+    border: "border-indigo-200", 
+    text: "text-indigo-800", 
+    hover: "hover:bg-indigo-100",
+    darkBg: "bg-indigo-100"
+  },
+  amber: { 
+    bg: "bg-amber-50", 
+    border: "border-amber-200", 
+    text: "text-amber-800", 
+    hover: "hover:bg-amber-100",
+    darkBg: "bg-amber-100"
+  },
+  pink: { 
+    bg: "bg-pink-50", 
+    border: "border-pink-200", 
+    text: "text-pink-800", 
+    hover: "hover:bg-pink-100",
+    darkBg: "bg-pink-100"
+  },
+  sky: { 
+    bg: "bg-sky-50", 
+    border: "border-sky-200", 
+    text: "text-sky-800", 
+    hover: "hover:bg-sky-100",
+    darkBg: "bg-sky-100"
+  }
+};
 
-  // Get seeds for selected category
-  const getSeedsBySeason = (seasonId) => {
-    return seeds.filter(seed => seed.season_id === seasonId);
-  };
+ const getSeedsBySeason = (seasonId) => {
+  console.log("Seeds array:", seeds[0]);
+console.log("Filtering seasonId:", seasonId);
+console.log("Filtered seeds:", seeds.filter(seed => seed.season_id == seasonId));
+
+  if (!seeds || seeds.length === 0) return [];
+  return seeds.filter(seed => seed.season_id == seasonId); // loose equality
+};
+
 
   // Handle seed click for navigation
-  const handleSeedClick = (seed) => {
-    const seedSlug = seed.name.replace(/\s+/g, '-').toLowerCase();
-    router.push(`/seed/${seedSlug}`);
-  };
+ const handleSeedClick = (seed) => {
+  const seeds = seed.name.replace(/\s+/g, '-').toLowerCase();
+  const season = seed.season_id.replace(/\s+/g, '-').toLowerCase();
+ // router.push(`/seed/${seedSeason}/${seedSlug}`);
+    router.push(`/seed/${seed._id}`);
+};
+
 
   // Mobile category selector
   const MobileCategorySelector = () => (
@@ -174,7 +188,7 @@ const SeasonSeeds = () => {
                 <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-3 md:mb-4">মৌসুম নির্বাচন</h2>
                 <div className="space-y-2 md:space-y-3">
                   {seasons.map((season) => {
-                    const color = colorClasses[season.color];
+                    const color = colorClasses[season.color] || colorClasses.emerald;
                     return (
                       <button
                         key={season.id}
