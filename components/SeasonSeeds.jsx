@@ -146,7 +146,7 @@ console.log("Filtered seeds:", seeds.filter(seed => seed.season_id == seasonId))
         }}
         className="w-full p-4 text-lg border-2 border-green-300 rounded-xl bg-white focus:outline-none focus:border-green-500"
       >
-        <option value="">মৌসুম নির্বাচন করুন kksdksdjfjf</option>
+        <option value="">মৌসুম নির্বাচন করুন </option>
         {seasons.map((season) => (
           <option key={season.id} value={season.id}>
             {season.icon} {season.title}
