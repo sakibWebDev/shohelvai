@@ -123,13 +123,13 @@ const DetailedCropCard = ({ crop }) => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-gray-500 font-medium">মৌসুমের নাম</p>
+                <p className="text-sm text-gray-500 font-medium">মৌসুমের নাম </p>
                 <p className="text-gray-800 font-semibold">
                   {crop.season_details.title}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500 font-medium">বাংলা মাস</p>
+                <p className="text-sm text-gray-500 font-medium">বাংলা  মাস</p>
                 <p className="text-gray-800 font-semibold">
                   {crop.season_details.bengali_months.join(", ")}
                 </p>
